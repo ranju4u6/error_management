@@ -1,0 +1,307 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:sch0="http://com.capgemini/cif" xmlns:sch1="http://com.capgemini/cif/iem"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://com.capgemini/cif/iem"
+	targetNamespace="http://com.capgemini/cif/iem">
+	<wsdl:types>
+		<xs:schema xmlns:cif="http://com.capgemini/cif" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+			attributeFormDefault="unqualified" elementFormDefault="qualified"
+			targetNamespace="http://com.capgemini/cif">
+			<xs:complexType name="ProcessActivityHeaderType">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="processActivityHeaderId"
+						type="cif:ProcessActivityHeaderIdType" />
+					<xs:element name="organizationId" type="cif:IdType" />
+					<xs:element name="originalProcessDatetime" type="xs:dateTime" />
+					<xs:element name="processId" type="cif:IdType" />
+					<xs:element name="sourceSystemId" type="cif:IdType" />
+					<xs:element name="destinationSystemId" type="cif:IdType" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:simpleType name="ProcessActivityHeaderIdType">
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="100" />
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="IdType">
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="20" />
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="ReferenceIdType">
+				<xs:restriction base="xs:string">
+					<xs:maxLength value="40" />
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="CountType">
+				<xs:restriction base="xs:int">
+					<xs:minInclusive value="0" />
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="WholeNumberType">
+				<xs:restriction base="xs:int">
+					<xs:minInclusive value="1" />
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:simpleType name="ValueType">
+				<xs:restriction base="xs:decimal">
+					<xs:totalDigits value="15" />
+					<xs:fractionDigits value="2" />
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:complexType name="PageType">
+				<xs:sequence>
+					<xs:element default="1" name="number" type="xs:int" />
+					<xs:element default="25" name="size" type="xs:int" />
+					<xs:element minOccurs="0" name="numberOfElements" type="xs:int" />
+					<xs:element minOccurs="0" name="totalElements" type="xs:int" />
+					<xs:element name="totalPages" type="xs:int" />
+					<xs:element name="sort" type="cif:SortType" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="SortType">
+				<xs:sequence>
+					<xs:element name="fieldName" type="xs:string" />
+					<xs:element default="Descending" name="order"
+						type="cif:SortOrderType" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:simpleType name="SortOrderType">
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Ascending" />
+					<xs:enumeration value="Descending" />
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:schema>
+		<xs:schema xmlns:cif="http://com.capgemini/cif" xmlns:iem="http://com.capgemini/cif/iem"
+			xmlns:xs="http://www.w3.org/2001/XMLSchema"  attributeFormDefault="unqualified"
+			elementFormDefault="qualified" targetNamespace="http://com.capgemini/cif/iem" >
+			<xs:import namespace="http://com.capgemini/cif" />
+			<xs:element name="LogProcessActivityErrorRequest">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="processActivityHeader" type="cif:ProcessActivityHeaderType" />
+						<xs:element name="processActivityErrors">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element maxOccurs="unbounded" name="processActivityError"
+										type="iem:ProcessActivityErrorType" />
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="LogProcessActivityErrorResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="processActivityHeaderId" type="cif:ProcessActivityHeaderIdType" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetCorrectedActivitiesRequest">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="organizationId" type="cif:IdType" />
+						<xs:element minOccurs="0" name="headerId"
+							type="cif:ProcessActivityHeaderIdType" />
+						<xs:element minOccurs="0" name="processId" type="cif:IdType" />
+						<xs:element minOccurs="0" name="sourceSystemId" type="cif:IdType" />
+						<xs:element minOccurs="0" name="originalProcessDatetime"
+							type="xs:dateTime" />
+						<xs:element minOccurs="0" name="correctedProcessDatetime"
+							type="xs:dateTime" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetCorrectedActivitiesResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="sessionId" type="xs:string" />
+						<xs:element name="correctedRecords" type="iem:CorrectedRecordsType" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetBlockedActivitiesRequest">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="organizationId" type="cif:IdType" />
+						<xs:element minOccurs="0" name="sourceSystemId" type="cif:IdType" />
+						<xs:element minOccurs="0" name="originalProcessDatetime"
+							type="xs:dateTime" />
+						<xs:element minOccurs="0" name="correctedProcessDatetime"
+							type="xs:dateTime" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetBlockedActivitiesResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="sessionId" type="xs:string" />
+						<xs:element name="correctedRecords" type="iem:CorrectedRecordsType" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="CorrectedRecordsType">
+				<xs:sequence>
+					<xs:element maxOccurs="unbounded" minOccurs="0"
+						name="correctedRecord" type="iem:CorrectedRecordType" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="CorrectedRecordType">
+				<xs:sequence>
+					<xs:element name="processActivityHeader" type="cif:ProcessActivityHeaderType" />
+					<xs:element maxOccurs="unbounded" minOccurs="0" name="payloads"
+						type="iem:PayloadRecordType" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="PayloadRecordType">
+				<xs:sequence>
+					<xs:element name="payload" type="xs:string" />
+					<xs:element default="0" name="processSequence" type="cif:CountType" />
+					<xs:element default="0" name="processIndex" type="cif:CountType" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ConfirmReprocessActivitiesRequest">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="sessionId" type="xs:string" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ConfirmReprocessActivitiesResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="sessionId" type="xs:string" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:complexType name="ProcessActivityErrorType">
+				<xs:sequence>
+					<xs:element default="0" name="processSequence" type="cif:CountType" />
+					<xs:element default="0" name="processIndex" type="cif:CountType" />
+					<xs:element name="processDate" type="xs:dateTime" />
+					<xs:element minOccurs="0" name="sourceSystemRefId" type="cif:IdType" />
+					<xs:element name="payload" type="xs:string" />
+					<xs:element minOccurs="0" name="errorMessage" type="xs:string" />
+					<xs:element name="statusId" type="cif:IdType" />
+					<xs:element name="processActivityErrorDetails">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element maxOccurs="unbounded" name="processActivityErrorDetail"
+									type="iem:ProcessActivityErrorDetailType" />
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ProcessActivityErrorDetailType">
+				<xs:sequence>
+					<xs:element name="processLevel" type="cif:WholeNumberType" />
+					<xs:element name="processSequence" type="xs:string" />
+					<xs:element name="errorMessage" type="xs:string" />
+					<xs:element name="statusId" type="cif:IdType" />
+				</xs:sequence>
+			</xs:complexType>
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="LogProcessActivityErrorRequest">
+		<wsdl:part element="tns:LogProcessActivityErrorRequest"
+			name="LogProcessActivityErrorRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="GetCorrectedActivitiesRequest">
+		<wsdl:part element="tns:GetCorrectedActivitiesRequest" name="GetCorrectedActivitiesRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="GetCorrectedActivitiesResponse">
+		<wsdl:part element="tns:GetCorrectedActivitiesResponse"
+			name="GetCorrectedActivitiesResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="LogProcessActivityErrorResponse">
+		<wsdl:part element="tns:LogProcessActivityErrorResponse"
+			name="LogProcessActivityErrorResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="GetBlockedActivitiesRequest">
+		<wsdl:part element="tns:GetBlockedActivitiesRequest" name="GetBlockedActivitiesRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="GetBlockedActivitiesResponse">
+		<wsdl:part element="tns:GetBlockedActivitiesResponse" name="GetBlockedActivitiesResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="ConfirmReprocessActivitiesRequest">
+		<wsdl:part element="tns:ConfirmReprocessActivitiesRequest"
+			name="ConfirmReprocessActivitiesRequest"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="ConfirmReprocessActivitiesResponse">
+		<wsdl:part element="tns:ConfirmReprocessActivitiesResponse"
+			name="ConfirmReprocessActivitiesResponse"></wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="ProcessActivityError">
+		<wsdl:operation name="LogProcessActivityError">
+			<wsdl:input message="tns:LogProcessActivityErrorRequest"
+				name="LogProcessActivityErrorRequest"></wsdl:input>
+			<wsdl:output message="tns:LogProcessActivityErrorResponse"
+				name="LogProcessActivityErrorResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetCorrectedActivities">
+			<wsdl:input message="tns:GetCorrectedActivitiesRequest"
+				name="GetCorrectedActivitiesRequest"></wsdl:input>
+			<wsdl:output message="tns:GetCorrectedActivitiesResponse"
+				name="GetCorrectedActivitiesResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetBlockedActivities">
+			<wsdl:input message="tns:GetBlockedActivitiesRequest"
+				name="GetBlockedActivitiesRequest"></wsdl:input>
+			<wsdl:output message="tns:GetBlockedActivitiesResponse"
+				name="GetBlockedActivitiesResponse"></wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ConfirmReprocessActivities">
+			<wsdl:input message="tns:ConfirmReprocessActivitiesRequest"
+				name="ConfirmReprocessActivitiesRequest"></wsdl:input>
+			<wsdl:output message="tns:ConfirmReprocessActivitiesResponse"
+				name="ConfirmReprocessActivitiesResponse"></wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="ProcessActivityErrorSoap11" type="tns:ProcessActivityError">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="LogProcessActivityError">
+			<soap:operation soapAction="" />
+			<wsdl:input name="LogProcessActivityErrorRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="LogProcessActivityErrorResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetCorrectedActivities">
+			<soap:operation soapAction="" />
+			<wsdl:input name="GetCorrectedActivitiesRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="GetCorrectedActivitiesResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetBlockedActivities">
+			<soap:operation soapAction="" />
+			<wsdl:input name="GetBlockedActivitiesRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="GetBlockedActivitiesResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="ConfirmReprocessActivities">
+			<soap:operation soapAction="" />
+			<wsdl:input name="ConfirmReprocessActivitiesRequest">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="ConfirmReprocessActivitiesResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="ProcessActivityErrorService">
+		<wsdl:port binding="tns:ProcessActivityErrorSoap11" name="ProcessActivityErrorSoap11">
+			<soap:address location="http://localhost:8080/CIF/iem/" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
