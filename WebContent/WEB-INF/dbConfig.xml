@@ -17,7 +17,7 @@
         http://www.springframework.org/schema/oxm/spring-oxm-3.0.xsd">
 
 	<!-- <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-		<property name="jndiName" value="java:jboss/datasources/MySqlDS" />
+		<property name="jndiName" value="java:jboss/datasources/MySqlDS"/>
 	</bean> -->
 	
 	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
